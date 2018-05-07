@@ -118,16 +118,17 @@ var answerUser =[
     }
 ];
 
-
-
+var quizQuestion = document.querySelector(".quizQuestion");
+var quizResponses = document.querySelectorAll (".questionsAndAnswers p")
+console.log(quizResponses)
 
 function lanzaPregunta(){
     var i = 0;
     setInterval(function(){ 
         if(i < questions.length){
-            console.log(questions[i].question);
+            quizQuestion.innerHTML = (questions[i].question);
             for(let x = 0; x < questions[i].answer.length; x++){
-              console.log(questions[i].answer[x].value);
+              quizResponses[x].innerHTML = (questions[i].answer[x].value);
             }
             i++;
         }
@@ -135,59 +136,3 @@ function lanzaPregunta(){
 }
 lanzaPregunta();
 
-
-
-// function isCorrect(questions, answerUser){
-//     if(questions.id !== answerUser.answerId){
-//         return false;
-//     }
-//     if(questions.correctAnswer.id !== answerUser.id){
-//         return false;
-//     }
-//     return true;
-// }
-
-
-
-
-
-
-
-
-
-
-//Como funciona JASMINE??
-
-// function describe (nombreDelTest, funcion){ 
-//     try {
-//         funcion();
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-
-// function it (nombre, funcionIt){
-//     try {
-//         funcionIt();
-//     } catch (error) {
-//         throw nombre + error;
-//     }
-
-// }
-
-
-// function expect (actual){
-//     return {
-//         toEqual: function(expect){
-//             if(actual != expect){
-//                  throw actual + 'is not equal to'  + expect
-//                 }
-           
-//     }}}
-
-//     describe ('test describe', function(){
-//         it('it test', function(){
-//             expect(3).toEqual(3);
-//         })
-//     })
