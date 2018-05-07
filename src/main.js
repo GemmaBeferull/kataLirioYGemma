@@ -121,19 +121,47 @@ var answerUser =[
 var quizQuestion = document.querySelector(".quizQuestion");
 var quizResponses = document.querySelectorAll (".questionsAndAnswers p");
 var radioButtons = document.getElementsByName('resp1');
+var sendResponse = document.getElementById('sendResponse');
+
+
+// function lanzaPregunta(){
+//     var i = 0;
+//     setInterval(function(){ 
+//         if(i < questions.length){
+//             quizQuestion.innerHTML = (questions[i].question);
+//             for(let x = 0; x < questions[i].answer.length; x++){
+//               quizResponses[x].innerHTML = (questions[i].answer[x].value);
+              
+//             }
+//             i++;
+//         }
+//     }, 1000);
+// }
+// lanzaPregunta();
+
+var i = 0;
 
 function lanzaPregunta(){
-    var i = 0;
-    setInterval(function(){ 
-        if(i < questions.length){
-            quizQuestion.innerHTML = (questions[i].question);
-            for(let x = 0; x < questions[i].answer.length; x++){
-              quizResponses[x].innerHTML = (questions[i].answer[x].value);
-              
-            }
-            i++;
-        }
-    }, 1000);
-}
-lanzaPregunta();
 
+  if(i < questions.length){
+    quizQuestion.innerHTML = (questions[i].question);
+    for(let x = 0; x < questions[i].answer.length; x++){
+      quizResponses[x].innerHTML = (questions[i].answer[x].value);
+    }
+    i++;
+  }    
+}
+  lanzaPregunta();
+
+function getResponseValue(){
+  for(let x = 0; x < radioButtons.length; x++){
+    if (radioButtons[x].checked){
+      console.log(quizResponses[x].innerHTML);
+      radioButtons[x].checked = false;
+    }
+  }
+  
+  lanzaPregunta();
+}
+
+sendResponse.addEventListener("click", getResponseValue);
