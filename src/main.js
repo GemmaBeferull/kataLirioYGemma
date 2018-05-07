@@ -119,8 +119,8 @@ var answerUser =[
 ];
 
 var quizQuestion = document.querySelector(".quizQuestion");
-var quizResponses = document.querySelectorAll (".questionsAndAnswers p")
-console.log(quizResponses)
+var quizResponses = document.querySelectorAll (".questionsAndAnswers p");
+var radioButtons = document.getElementsByName('resp1');
 
 function lanzaPregunta(){
     var i = 0;
@@ -129,6 +129,7 @@ function lanzaPregunta(){
             quizQuestion.innerHTML = (questions[i].question);
             for(let x = 0; x < questions[i].answer.length; x++){
               quizResponses[x].innerHTML = (questions[i].answer[x].value);
+              
             }
             i++;
         }
