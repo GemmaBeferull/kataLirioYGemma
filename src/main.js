@@ -142,7 +142,6 @@ var sendResponse = document.getElementById('sendResponse');
 var i = 0;
 
 function lanzaPregunta(){
-
   if(i < questions.length){
     quizQuestion.innerHTML = (questions[i].question);
     for(let x = 0; x < questions[i].answer.length; x++){
@@ -151,7 +150,7 @@ function lanzaPregunta(){
     i++;
   }    
 }
-  lanzaPregunta();
+
 
 function getResponseValue(){
   for(let x = 0; x < radioButtons.length; x++){
