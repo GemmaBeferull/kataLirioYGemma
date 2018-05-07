@@ -1,0 +1,34 @@
+.title {
+    text-align: center;
+}
+
+.questionsAndAnswers p {
+    display: inline;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.questionsAndAnswers {
+    width: 50%;
+}
+
+.score {
+    width: 50%;
+    text-align: center;
+
+}
+
+.result {
+    text-align: center;
+}
+
+.buttons {
+    text-align: center;
+}
+
+table {
+    margin:auto;
+}
