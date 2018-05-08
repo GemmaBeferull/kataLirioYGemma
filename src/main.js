@@ -95,28 +95,7 @@ var questions = [
         correctAnswer: {id: 3}
     }
 ];
-var answerUser =[
-    {
-        answerId: 1,
-        id: 3
-    },
-    {
-        answerId: 2,
-        id: 2
-    },
-    {
-        answerId: 3,
-        id: 3
-    },
-    {
-        answerId: 4,
-        id: 2
-    },
-    {
-        answerId: 5,
-        id: 3
-    }
-];
+var answerUser =[];
 
 var quizQuestion = document.querySelector(".quizQuestion");
 var quizResponses = document.querySelectorAll (".questionsAndAnswers p");
@@ -151,16 +130,36 @@ function lanzaPregunta(){
   }    
 }
 
+function isCorrect(questionsList, answerUserList){
+  console.log(questionsList);
+  console.log(answerUserList);
+  if(questionsList.id !== answerUserList.id){
+    return false;
+  }
+  if(questionsList.correctAnswer.id !== answerUserList.answerId){
+    return false;
+  }
+  lanzaPregunta();
+}
 
 function getResponseValue(){
   for(let x = 0; x < radioButtons.length; x++){
+    if(i == 0){
+      radioButtons[x].classList.remove("hidden");
+      sendResponse.innerHTML = "Enviar respuesta";
+    }
     if (radioButtons[x].checked){
-      console.log(quizResponses[x].innerHTML);
+      answerUser.push({
+        id : i,
+        answerId: quizResponses[x].innerHTML
+      });
       radioButtons[x].checked = false;
+      isCorrect(questions[i], answerUser[i]);
     }
   }
-  
   lanzaPregunta();
 }
+
+
 
 sendResponse.addEventListener("click", getResponseValue);

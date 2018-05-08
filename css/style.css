@@ -36,3 +36,7 @@ table {
 .hidden {
     display: none;
 }
+
+.quizQuestion {
+    text-align: center;
+}
