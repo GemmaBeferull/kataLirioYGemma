@@ -131,15 +131,15 @@ function lanzaPregunta(){
 }
 
 function isCorrect(questionsList, answerUserList){
-  console.log(questionsList);
-  console.log(answerUserList);
   if(questionsList.id !== answerUserList.id){
     return false;
   }
   if(questionsList.correctAnswer.id !== answerUserList.answerId){
-    return false;
+    console.log("Mal!");
+  }else{
+    console.log("Bien!");
+    lanzaPregunta();
   }
-  lanzaPregunta();
 }
 
 function getResponseValue(){
@@ -154,7 +154,7 @@ function getResponseValue(){
         answerId: quizResponses[x].innerHTML
       });
       radioButtons[x].checked = false;
-      isCorrect(questions[i], answerUser[i]);
+      isCorrect(questions[i - 1], answerUser[i - 1]);
     }
   }
   lanzaPregunta();
