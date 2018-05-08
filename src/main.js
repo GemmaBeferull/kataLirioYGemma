@@ -126,35 +126,30 @@ function app() {
 
   }
 
-
-  function isCorrect(questionsList, answerUserList) {
-    result.classList.remove("hidden");
-
-    if (questionsList.id !== answerUserList.id) {
-      result.innerHTML = "Mal!";
-    }
-    if (questionsList.correctAnswer.id !== answerUserList.answerId) {
-      result.innerHTML = "Mal!";
-    } else {
-      result.innerHTML = "Bien!";
-
-    }
-
-  }
-
-  function getResponseValue() {
+  function paintResult(){
     for (let x = 0; x < radioButtons.length; x++) {
       if (radioButtons[x].checked) {
-        answerUser.push({
+        radioButtons[x].checked = false;
+        var answer = {
           id: i,
           answerId: x
-        });
-        radioButtons[x].checked = false;
+        };
+        result.classList.remove("hidden");
+        if (questions[i].id !== answer.id) {
+          result.innerHTML = "Mal!";
+        }
+        if (questions[i].correctAnswer.id !== answer.answerId) {
+          result.innerHTML = "Mal!";
+        } else {
+          result.innerHTML = "Bien!";
 
-        isCorrect(questions[i], answerUser[i]);
-        // timeOut();
+        }
       }
     }
+  }
+
+  function answerQuestion() {
+    paintResult();
     i++;
     lanzaPregunta()
   }
@@ -178,7 +173,7 @@ function app() {
       } else {
         clearInterval(id);
         console.log('ola');
-        getResponseValue();
+        answerQuestion();
         indexCountDown = 0;
 
       }
@@ -189,7 +184,7 @@ function app() {
 
 
   startGameButton.addEventListener("click", startGame);
-  sendResponse.addEventListener("click", getResponseValue);
+  sendResponse.addEventListener("click", answerQuestion);
 
 
 }
