@@ -2,7 +2,7 @@ function app() {
 
   var questions = [
     {
-      id: 1,
+      id: 0,
       question: "Cual es la capital de Venezuela?",
       answer: [
         {
@@ -21,7 +21,7 @@ function app() {
       correctAnswer: { id: 2 }
     },
     {
-      id: 2,
+      id: 1,
       question: "Cual es la capital de Brasil?",
       answer: [
         {
@@ -40,7 +40,7 @@ function app() {
       correctAnswer: { id: 1 }
     },
     {
-      id: 3,
+      id: 2,
       question: "Cual es la capital de Venezuela?2",
       answer: [
         {
@@ -59,7 +59,7 @@ function app() {
       correctAnswer: { id: 2 }
     },
     {
-      id: 4,
+      id: 3,
       question: "Cual es la capital de Brasil?3",
       answer: [
         {
@@ -78,7 +78,7 @@ function app() {
       correctAnswer: { id: 1 }
     },
     {
-      id: 5,
+      id: 4,
       question: "Cual es la capital de Venezuela?4",
       answer: [
         {
@@ -110,8 +110,8 @@ function app() {
     for (let x = 0; x < radioButtons.length; x++) {
       radioButtons[x].classList.remove("hidden");
     }
-    sendResponse.classList.remove("hidden");
     startGameButton.classList.add("hidden");
+    sendResponse.classList.remove("hidden");
     printNewQuestion();
     countDown();
   }
@@ -142,12 +142,6 @@ function app() {
           answerId: x
         };
       }
-      // if(!radioButtons[x].checked){
-      //   answer = {
-      //     id: indexQuestion,
-      //     answerId: "vacio"
-      //   };
-      // }
     }
     compareAndPrintResult(answer);
   }
@@ -157,7 +151,7 @@ function app() {
     const result = document.querySelector(".result");
     result.classList.remove("hidden");
     if (questions[indexQuestion].id !== answer.id) {
-      result.innerHTML = "Mal!";
+      return false;
     }
     if (questions[indexQuestion].correctAnswer.id !== answer.answerId) {
       result.innerHTML = "Mal!";
@@ -184,7 +178,7 @@ function app() {
   }
 
   function sumPoints(timeSpent) {
-    const playerPoints = document.querySelector('.score p')
+    const playerPoints = document.querySelector('.score p');
     if (timeSpent <= 2) {
       playerPoints.innerHTML = userPoints += 2;
     }
@@ -195,7 +189,7 @@ function app() {
   }
 
   function decreasePoints(timeSpent) {
-    const playerPoints = document.querySelector('.score p')
+    const playerPoints = document.querySelector('.score p');
     if (timeSpent <= 10) {
       playerPoints.innerHTML = userPoints -= 1;
     }
