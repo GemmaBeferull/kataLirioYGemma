@@ -104,6 +104,9 @@ function app() {
   var indexQuestion = 0;
   var id, indexCountDown;
   var userPoints = 0;
+  var totalFailedAnswers = 0;
+  var totalCorrectAnswers = 0;
+  var sumTimePerQuestion = 0;
 
   function startGame() {
     const radioButtons = document.getElementsByName('resp1');
@@ -147,7 +150,6 @@ function app() {
   }
 
   function compareAndPrintResult(answer){
-    console.log(answer);
     const result = document.querySelector(".result");
     result.classList.remove("hidden");
     if (questions[indexQuestion].id !== answer.id) {
@@ -156,10 +158,13 @@ function app() {
     if (questions[indexQuestion].correctAnswer.id !== answer.answerId) {
       result.innerHTML = "Mal!";
       decreasePoints(indexCountDown);
+      totalFailedAnswers++;
     } else {
       result.innerHTML = "Bien!";
       sumPoints(indexCountDown);
+      totalCorrectAnswers++;      
     }
+    showStats();
   }
 
   function countDown() {
@@ -195,25 +200,41 @@ function app() {
     }
     else if (timeSpent >= 12) {
       playerPoints.innerHTML = userPoints -= 3;
-      console.log(userPoints)
     }
     else if (timeSpent > 10) {
       playerPoints.innerHTML = userPoints -= 2;
     }
   }
 
+  function calculateTimeAverage() {
+    console.log(sumTimePerQuestion)
+    let timeAverage = sumTimePerQuestion / 5;
+    return timeAverage;
+  }
+
+  function showStats() {
+    const sumCorrectAnswers = document.getElementById('totalCorrectAnswers');
+    const averageSpeed      = document.getElementById('averageSpeed');
+    const sumFailedAnswers  = document.getElementById('totalFailedAnswers');
+    sumCorrectAnswers.innerHTML = totalCorrectAnswers;
+    sumFailedAnswers.innerHTML = totalFailedAnswers;
+    averageSpeed.innerHTML = calculateTimeAverage();
+  }
+
   function startNewQuestion() {
-    saveResponse();
     indexQuestion++;
     if(indexQuestion == questions.length){
       sendResponse.disabled = true;
       clearInterval(id);
+      sumTimePerQuestion += indexCountDown;
     }else{
       printNewQuestion();
       clearInterval(id);
+      sumTimePerQuestion += indexCountDown;
       countDown();
     }
+    saveResponse();
+    
   }
-
   sendResponse.addEventListener("click", startNewQuestion);
 }
