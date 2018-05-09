@@ -208,7 +208,7 @@ function app() {
 
   function calculateTimeAverage() {
     console.log(sumTimePerQuestion)
-    let timeAverage = sumTimePerQuestion / 5;
+    let timeAverage = sumTimePerQuestion / (indexQuestion);
     return timeAverage;
   }
 
