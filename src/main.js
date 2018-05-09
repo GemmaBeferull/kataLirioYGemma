@@ -130,7 +130,9 @@ function app() {
   }
 
   function saveResponse(){
-    var answer;
+    var answer= {
+      id: indexQuestion,
+    };
     const radioButtons = document.getElementsByName('resp1');
     for (let x = 0; x < radioButtons.length; x++) {
       if (radioButtons[x].checked) {
@@ -159,7 +161,7 @@ function app() {
     }
     if (questions[indexQuestion].correctAnswer.id !== answer.answerId) {
       result.innerHTML = "Mal!";
-      decreasePoints(userPoints, indexCountDown);
+      decreasePoints(indexCountDown);
     } else {
       result.innerHTML = "Bien!";
       sumPoints(indexCountDown);
@@ -170,7 +172,7 @@ function app() {
     const timer = document.querySelector(".timer");
     indexCountDown = 1;
     id = setInterval(function () {
-      if (indexCountDown <= 20) {
+      if (indexCountDown <= 12) {
         timer.innerHTML = indexCountDown;
         indexCountDown++;
       } else {
@@ -182,21 +184,27 @@ function app() {
   }
 
   function sumPoints(timeSpent) {
+    const playerPoints = document.querySelector('.score p')
     if (timeSpent <= 2) {
-      userPoints += 2;
+      playerPoints.innerHTML = userPoints += 2;
     }
     if (timeSpent > 2 && timeSpent <= 10) {
-      userPoints += 1;
-      console.log(userPoints);
+      playerPoints.innerHTML = userPoints += 1;
+      
     }
   }
 
-  function decreasePoints(userPoints, timeSpent) {
+  function decreasePoints(timeSpent) {
+    const playerPoints = document.querySelector('.score p')
     if (timeSpent <= 10) {
-      console.log(userPoints -= 1);
+      playerPoints.innerHTML = userPoints -= 1;
     }
-    if (timeSpent > 10) {
-      console.log(userPoints -= 2);
+    else if (timeSpent >= 12) {
+      playerPoints.innerHTML = userPoints -= 3;
+      console.log(userPoints)
+    }
+    else if (timeSpent > 10) {
+      playerPoints.innerHTML = userPoints -= 2;
     }
   }
 
