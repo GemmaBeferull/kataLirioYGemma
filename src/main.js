@@ -101,58 +101,9 @@ function app() {
   const startGameButton = document.getElementById('startGameButton');
   const sendResponse = document.getElementById('sendResponse');
  
-  var i = 0;
+  var indexQuestion = 0;
   var id, indexCountDown;
   var userPoints = 0;
-
-  function lanzaPregunta() {
-    const quizQuestion = document.querySelector(".quizQuestion");
-    const quizResponses = document.querySelectorAll(".questionsAndAnswers p");
-    if (i < questions.length) {
-      quizQuestion.innerHTML = (questions[i].question);
-      for (let x = 0; x < questions[i].answer.length; x++) {
-        quizResponses[x].innerHTML = (questions[i].answer[x].value);
-      }
-    }
-  }
-
-  function paintResult(){
-    const radioButtons = document.getElementsByName('resp1');
-    const result = document.querySelector(".result");
-    for (let x = 0; x < radioButtons.length; x++) {
-      if (radioButtons[x].checked) {
-        radioButtons[x].checked = false;
-        var answer = {
-          id: i,
-          answerId: x
-        };
-        result.classList.remove("hidden");
-        if (questions[i].id !== answer.id) {
-          result.innerHTML = "Mal!";
-        }
-        if (questions[i].correctAnswer.id !== answer.answerId) {
-          result.innerHTML = "Mal!";
-          decreasePoints(userPoints, indexCountDown);
-        } else {
-          result.innerHTML = "Bien!";
-          sumPoints(userPoints, indexCountDown);
-        }
-      }
-    }
-  }
-
-  function answerQuestion() {
-    paintResult();
-    i++;
-    if(i == questions.length){
-      sendResponse.disabled = true;
-      clearInterval(id);
-    }else{
-      lanzaPregunta();
-      clearInterval(id);
-      countDown();
-    }
-  }
 
   function startGame() {
     const radioButtons = document.getElementsByName('resp1');
@@ -161,8 +112,58 @@ function app() {
     }
     sendResponse.classList.remove("hidden");
     startGameButton.classList.add("hidden");
-    lanzaPregunta();
+    printNewQuestion();
     countDown();
+  }
+
+  startGameButton.addEventListener("click", startGame);
+
+  function printNewQuestion() {
+    const quizQuestion = document.querySelector(".quizQuestion");
+    const quizResponses = document.querySelectorAll(".questionsAndAnswers p");
+    if (indexQuestion < questions.length) {
+      quizQuestion.innerHTML = (questions[indexQuestion].question);
+      for (let x = 0; x < questions[indexQuestion].answer.length; x++) {
+        quizResponses[x].innerHTML = (questions[indexQuestion].answer[x].value);
+      }
+    }
+  }
+
+  function saveResponse(){
+    var answer;
+    const radioButtons = document.getElementsByName('resp1');
+    for (let x = 0; x < radioButtons.length; x++) {
+      if (radioButtons[x].checked) {
+        radioButtons[x].checked = false;
+        answer = {
+          id: indexQuestion,
+          answerId: x
+        };
+      }
+      // if(!radioButtons[x].checked){
+      //   answer = {
+      //     id: indexQuestion,
+      //     answerId: "vacio"
+      //   };
+      // }
+    }
+    compareAndPrintResult(answer);
+  }
+
+  function compareAndPrintResult(answer){
+    console.log(answer);
+    const result = document.querySelector(".result");
+    result.classList.remove("hidden");
+    if (questions[indexQuestion].id !== answer.id) {
+      result.innerHTML = "Mal!";
+    }
+    if (questions[indexQuestion].correctAnswer.id !== answer.answerId) {
+      result.innerHTML = "Mal!";
+      decreasePoints(userPoints, indexCountDown);
+    } else {
+      result.innerHTML = "Bien!";
+      sumPoints(indexCountDown);
+    }
   }
 
   function countDown() {
@@ -174,20 +175,19 @@ function app() {
         indexCountDown++;
       } else {
         clearInterval(id);
-        answerQuestion();
+        startNewQuestion();
         indexCountDown = 0;
       }
     }, 1000);
   }
 
-  function sumPoints(userPoints, timeSpent) {
+  function sumPoints(timeSpent) {
     if (timeSpent <= 2) {
-      return userPoints += 2;
-      console.log(userPoints);
+      userPoints += 2;
     }
     if (timeSpent > 2 && timeSpent <= 10) {
+      userPoints += 1;
       console.log(userPoints);
-      return userPoints += 1;
     }
   }
 
@@ -200,6 +200,18 @@ function app() {
     }
   }
 
-  startGameButton.addEventListener("click", startGame);
-  sendResponse.addEventListener("click", answerQuestion);
+  function startNewQuestion() {
+    saveResponse();
+    indexQuestion++;
+    if(indexQuestion == questions.length){
+      sendResponse.disabled = true;
+      clearInterval(id);
+    }else{
+      printNewQuestion();
+      clearInterval(id);
+      countDown();
+    }
+  }
+
+  sendResponse.addEventListener("click", startNewQuestion);
 }
