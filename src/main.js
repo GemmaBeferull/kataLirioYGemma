@@ -98,20 +98,20 @@ function app() {
     }
   ];
 
-  const startGameButton = document.getElementById('startGameButton');
-  const sendResponse = document.getElementById('sendResponse');
+  const startGameButton   = document.getElementById('startGameButton');
+  const sendResponse      = document.getElementById('sendResponse');
  
-  var indexQuestion = 0;
   var id, indexCountDown;
-  var userPoints = 0;
-  var totalFailedAnswers = 0;
+  var indexQuestion       = 0;
+  var userPoints          = 0;
+  var totalFailedAnswers  = 0;
   var totalCorrectAnswers = 0;
-  var sumTimePerQuestion = 0;
+  var sumTimePerQuestion  = 0;
 
   function startGame() {
     const radioButtons = document.getElementsByName('resp1');
-    for (let x = 0; x < radioButtons.length; x++) {
-      radioButtons[x].classList.remove("hidden");
+    for (let i = 0; i < radioButtons.length; i++) {
+      radioButtons[i].classList.remove("hidden");
     }
     startGameButton.classList.add("hidden");
     sendResponse.classList.remove("hidden");
@@ -122,12 +122,12 @@ function app() {
   startGameButton.addEventListener("click", startGame);
 
   function printNewQuestion() {
-    const quizQuestion = document.querySelector(".quizQuestion");
+    const quizQuestion  = document.querySelector(".quizQuestion");
     const quizResponses = document.querySelectorAll(".questionsAndAnswers p");
     if (indexQuestion < questions.length) {
       quizQuestion.innerHTML = (questions[indexQuestion].question);
-      for (let x = 0; x < questions[indexQuestion].answer.length; x++) {
-        quizResponses[x].innerHTML = (questions[indexQuestion].answer[x].value);
+      for (let i = 0; i < questions[indexQuestion].answer.length; i++) {
+        quizResponses[i].innerHTML = (questions[indexQuestion].answer[i].value);
       }
     }
   }
@@ -137,17 +137,18 @@ function app() {
       id: indexQuestion,
     };
     const radioButtons = document.getElementsByName('resp1');
-    for (let x = 0; x < radioButtons.length; x++) {
-      if (radioButtons[x].checked) {
-        radioButtons[x].checked = false;
+    for (let i = 0; i < radioButtons.length; i++) {
+      if (radioButtons[i].checked) {
+        radioButtons[i].checked = false;
         answer = {
           id: indexQuestion,
-          answerId: x
+          answerId: i
         };
       }
     }
     compareAndPrintResult(answer);
   }
+
   function compareAndPrintResult(answer){
     const result = document.querySelector(".result");
     result.classList.remove("hidden");
@@ -189,7 +190,6 @@ function app() {
     }
     if (timeSpent > 2 && timeSpent <= 10) {
       playerPoints.innerHTML = userPoints += 1;
-      
     }
   }
 
@@ -237,8 +237,8 @@ function app() {
       clearInterval(id);
       countDown();
     }
-    
-    
   }
+
   sendResponse.addEventListener("click", startNewQuestion);
+
 }
