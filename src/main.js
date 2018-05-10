@@ -100,8 +100,7 @@ function app() {
 
   const startGameButton   = document.getElementById('startGameButton');
   const sendResponse      = document.getElementById('sendResponse');
- 
-  var id, indexCountDown;
+  var id, indexCountDown, answer;
   var indexQuestion       = 0;
   var userPoints          = 0;
   var totalFailedAnswers  = 0;
@@ -109,14 +108,18 @@ function app() {
   var sumTimePerQuestion  = 0;
 
   function startGame() {
+    printDomElements ();
+    printNewQuestion();
+    countDown();
+  }
+
+  function printDomElements (){
     const radioButtons = document.getElementsByName('resp1');
     for (let i = 0; i < radioButtons.length; i++) {
       radioButtons[i].classList.remove("hidden");
     }
     startGameButton.classList.add("hidden");
     sendResponse.classList.remove("hidden");
-    printNewQuestion();
-    countDown();
   }
 
   startGameButton.addEventListener("click", startGame);
@@ -131,22 +134,19 @@ function app() {
       }
     }
   }
-
+  
   function saveResponse(){
-    var answer= {
-      id: indexQuestion,
-    };
     const radioButtons = document.getElementsByName('resp1');
+    answer              = { id: indexQuestion };
     for (let i = 0; i < radioButtons.length; i++) {
       if (radioButtons[i].checked) {
         radioButtons[i].checked = false;
         answer = {
           id: indexQuestion,
           answerId: i
-        };
+        }
       }
     }
-    compareAndPrintResult(answer);
   }
 
   function compareAndPrintResult(answer){
@@ -159,13 +159,11 @@ function app() {
       result.innerHTML = "Mal!";
       decreasePoints(indexCountDown);
       totalFailedAnswers++;
-    } else {
+    }else {
       result.innerHTML = "Bien!";
       sumPoints(indexCountDown);
       totalCorrectAnswers++;      
     }
-    showStats();
-    indexQuestion++;
   }
 
   function countDown() {
@@ -176,12 +174,12 @@ function app() {
         timer.innerHTML = indexCountDown;
         indexCountDown++;
       } else {
-        clearInterval(id);
-        startNewQuestion();
-        indexCountDown = 0;
+        onTimeExpired()
       }
     }, 1000);
   }
+
+
 
   function sumPoints(timeSpent) {
     const playerPoints = document.querySelector('.score p');
@@ -207,12 +205,12 @@ function app() {
   }
 
   function calculateTimeAverage() {
+    sumTimePerQuestion += indexCountDown;
     let timeAverage = sumTimePerQuestion / (indexQuestion + 1);
     return timeAverage;
   }
 
   function showStats() {
-    sumTimePerQuestion += indexCountDown;
     const sumCorrectAnswers = document.getElementById('totalCorrectAnswers');
     const averageSpeed      = document.getElementById('averageSpeed');
     const sumFailedAnswers  = document.getElementById('totalFailedAnswers');
@@ -221,20 +219,35 @@ function app() {
     averageSpeed.innerHTML = calculateTimeAverage();
   }
 
+  function onFinish() {
+    const containerQuestions = document.querySelector(".questionsAndAnswers");
+    const endGame = document.querySelector(".endGame");
+    const container = document.querySelector(".container");
+    containerQuestions.classList.add('hidden');
+    endGame.classList.remove('hidden');
+    container.style.flexDirection = "column";
+  }
+
+  function onTimeExpired(){
+    clearInterval(id);
+    startNewQuestion();
+    indexCountDown = 0;
+}
+
   function startNewQuestion() {
     if(indexQuestion == questions.length - 1){
-      const containerQuestions = document.querySelector(".questionsAndAnswers");
-      const endGame = document.querySelector(".endGame");
-      const container = document.querySelector(".container");
-      containerQuestions.classList.add('hidden');
-      endGame.classList.remove('hidden');
-      container.style.flexDirection = "column";
+      onFinish();
       saveResponse();
+      compareAndPrintResult(answer);
+      showStats();
       clearInterval(id);
     }else{
       saveResponse();
-      printNewQuestion();
+      compareAndPrintResult(answer);
+      showStats();
+      indexQuestion++;
       clearInterval(id);
+      printNewQuestion();
       countDown();
     }
   }
