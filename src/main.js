@@ -148,7 +148,6 @@ function app() {
     }
     compareAndPrintResult(answer);
   }
-  console.log(indexQuestion);
   function compareAndPrintResult(answer){
     const result = document.querySelector(".result");
     result.classList.remove("hidden");
@@ -172,7 +171,7 @@ function app() {
     const timer = document.querySelector(".timer");
     indexCountDown = 1;
     id = setInterval(function () {
-      if (indexCountDown <= 12) {
+      if (indexCountDown <= 6) {
         timer.innerHTML = indexCountDown;
         indexCountDown++;
       } else {
@@ -208,11 +207,12 @@ function app() {
   }
 
   function calculateTimeAverage() {
-    let timeAverage = sumTimePerQuestion / (indexQuestion);
+    let timeAverage = sumTimePerQuestion / (indexQuestion + 1);
     return timeAverage;
   }
 
   function showStats() {
+    sumTimePerQuestion += indexCountDown;
     const sumCorrectAnswers = document.getElementById('totalCorrectAnswers');
     const averageSpeed      = document.getElementById('averageSpeed');
     const sumFailedAnswers  = document.getElementById('totalFailedAnswers');
@@ -222,20 +222,19 @@ function app() {
   }
 
   function startNewQuestion() {
-    if(indexQuestion >= questions.length){
+    if(indexQuestion == questions.length - 1){
       const containerQuestions = document.querySelector(".questionsAndAnswers");
       const endGame = document.querySelector(".endGame");
       const container = document.querySelector(".container");
       containerQuestions.classList.add('hidden');
       endGame.classList.remove('hidden');
       container.style.flexDirection = "column";
+      saveResponse();
       clearInterval(id);
-      sumTimePerQuestion += indexCountDown;
     }else{
       saveResponse();
       printNewQuestion();
       clearInterval(id);
-      sumTimePerQuestion += indexCountDown;
       countDown();
     }
     
