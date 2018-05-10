@@ -148,7 +148,7 @@ function app() {
     }
     compareAndPrintResult(answer);
   }
-
+  console.log(indexQuestion);
   function compareAndPrintResult(answer){
     const result = document.querySelector(".result");
     result.classList.remove("hidden");
@@ -165,6 +165,7 @@ function app() {
       totalCorrectAnswers++;      
     }
     showStats();
+    indexQuestion++;
   }
 
   function countDown() {
@@ -207,7 +208,6 @@ function app() {
   }
 
   function calculateTimeAverage() {
-    console.log(sumTimePerQuestion)
     let timeAverage = sumTimePerQuestion / (indexQuestion);
     return timeAverage;
   }
@@ -222,18 +222,23 @@ function app() {
   }
 
   function startNewQuestion() {
-    indexQuestion++;
-    if(indexQuestion == questions.length){
-      sendResponse.disabled = true;
+    if(indexQuestion >= questions.length){
+      const containerQuestions = document.querySelector(".questionsAndAnswers");
+      const endGame = document.querySelector(".endGame");
+      const container = document.querySelector(".container");
+      containerQuestions.classList.add('hidden');
+      endGame.classList.remove('hidden');
+      container.style.flexDirection = "column";
       clearInterval(id);
       sumTimePerQuestion += indexCountDown;
     }else{
+      saveResponse();
       printNewQuestion();
       clearInterval(id);
       sumTimePerQuestion += indexCountDown;
       countDown();
     }
-    saveResponse();
+    
     
   }
   sendResponse.addEventListener("click", startNewQuestion);
