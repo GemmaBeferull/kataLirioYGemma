@@ -117,7 +117,7 @@ function app() {
   startGameButton.addEventListener("click", startGame);
 
   function printDomElements (){
-    const radioButtons = document.getElementsByName('resp1');
+    const radioButtons = document.getElementsByClassName('option');
     for (let i = 0; i < radioButtons.length; i++) {
       radioButtons[i].classList.remove("hidden");
     }
@@ -134,7 +134,7 @@ function app() {
         quizResponses[i].innerHTML = (questions[indexQuestion].answer[i].value);
       }
     }
-  }
+  };
 
   function countDown() {
     const timer = document.querySelector(".timer");
@@ -230,7 +230,7 @@ function app() {
     container.style.flexDirection = "column";
   }
 
-  function saveCompareShowResult(){
+  function analyzeResults(){
     saveUserResponse();
     compareAndPrintResult(answer);
     showStats();
@@ -239,10 +239,10 @@ function app() {
   function startNewQuestion() {
     if(indexQuestion == questions.length - 1){
       onFinish();
-      saveCompareShowResult();
+      analyzeResults();
       clearInterval(idSetInterval);
     }else{
-      saveCompareShowResult();
+      analyzeResults();
       indexQuestion++;
       indexCountDown = 0;
       printNewQuestion();
