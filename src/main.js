@@ -100,12 +100,13 @@ function app() {
 
   const startGameButton   = document.getElementById('startGameButton');
   const sendResponse      = document.getElementById('sendResponse');
-  var id, indexCountDown, answer;
   var indexQuestion       = 0;
   var userPoints          = 0;
   var totalFailedAnswers  = 0;
   var totalCorrectAnswers = 0;
   var sumTimePerQuestion  = 0;
+  var indexCountDown      = 0;
+  var idSetInterval, answer;
 
   function startGame() {
     printDomElements ();
@@ -166,19 +167,6 @@ function app() {
     }
   }
 
-  function countDown() {
-    const timer = document.querySelector(".timer");
-    indexCountDown = 1;
-    id = setInterval(function () {
-      if (indexCountDown <= 6) {
-        timer.innerHTML = indexCountDown;
-        indexCountDown++;
-      } else {
-        onTimeExpired()
-      }
-    }, 1000);
-  }
-
   function sumPoints(timeSpent) {
     const playerPoints = document.querySelector('.score p');
     if (timeSpent <= 2) {
@@ -226,26 +214,38 @@ function app() {
     container.style.flexDirection = "column";
   }
 
+  function countDown() {
+    const timer = document.querySelector(".timer");
+    idSetInterval = setInterval(function () {
+      if (indexCountDown <= 12) {
+        timer.innerHTML = indexCountDown;
+        indexCountDown++;
+      } else {
+        onTimeExpired();
+      }
+    }, 1000);
+  }
+
   function onTimeExpired(){
-    clearInterval(id);
     startNewQuestion();
-}
+  }
+
+  function saveCompareShowResult(){
+    saveUserResponse();
+    compareAndPrintResult(answer);
+    showStats();
+  }
 
   function startNewQuestion() {
     if(indexQuestion == questions.length - 1){
       onFinish();
-      saveUserResponse();
-      compareAndPrintResult(answer);
-      showStats();
-      clearInterval(id);
+      saveCompareShowResult();
+      clearInterval(idSetInterval);
     }else{
-      saveUserResponse();
-      compareAndPrintResult(answer);
-      showStats();
+      saveCompareShowResult();
       indexQuestion++;
-      clearInterval(id);
+      indexCountDown = 0;
       printNewQuestion();
-      countDown();
     }
   }
 
