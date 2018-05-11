@@ -98,14 +98,14 @@ function app() {
     }
   ];
 
-  const startGameButton         = document.getElementById('startGameButton');
-  const sendResponseButton      = document.getElementById('sendResponse');
-  var indexQuestion             = 0;
-  var userPoints                = 0;
-  var totalFailedAnswers        = 0;
-  var totalCorrectAnswers       = 0;
-  var sumTimePerQuestion        = 0;
-  var indexCountDown            = 0;
+  var startGameButton;
+  var sendResponseButton;
+  var indexQuestion = 0;
+  var userPoints = 0;
+  var totalFailedAnswers = 0;
+  var totalCorrectAnswers = 0;
+  var sumTimePerQuestion = 0;
+  var indexCountDown = 0;
   var idSetInterval, answer;
 
   function startGame() {
@@ -114,7 +114,12 @@ function app() {
     countDown();
   }
 
-  startGameButton.addEventListener("click", startGame);
+  function initialize(){
+    startGameButton = document.getElementById('startGameButton');
+    startGameButton.addEventListener("click", startGame);
+    sendResponseButton = document.getElementById('sendResponse');
+    sendResponseButton.addEventListener("click", startNewQuestion);
+  }
 
   function printDomElements (){
     const radioButtons = document.getElementsByClassName('option');
@@ -155,8 +160,8 @@ function app() {
   }
   
   function saveUserResponse(){
-    const radioButtons = document.getElementsByName('resp1');
-    answer             = { id: indexQuestion };
+    const radioButtons = document.getElementsByName('radioInput');
+    answer = { id: indexQuestion };
     for (let i = 0; i < radioButtons.length; i++) {
       if (radioButtons[i].checked) {
         radioButtons[i].checked = false;
@@ -177,12 +182,20 @@ function app() {
     if (questions[indexQuestion].correctAnswer.id !== answer.answerId) {
       scoreMessage.innerHTML = "Respuesta Incorrecta!";
       decreasePoints(indexCountDown);
-      totalFailedAnswers++;
+      sumFailedAnswers();
     }else {
       scoreMessage.innerHTML = "Respuesta Correcta!";
       sumPoints(indexCountDown);
-      totalCorrectAnswers++;      
+      sumCorrectAnswers();      
     }
+  }
+
+  function sumCorrectAnswers() {
+    totalCorrectAnswers++; 
+  }
+
+  function sumFailedAnswers() {
+    totalFailedAnswers++;
   }
 
   function sumPoints(timeSpent) {
@@ -236,18 +249,27 @@ function app() {
     showStats();
   }
 
+  function goToNextQuestion() {
+    indexQuestion++;
+  }
+
+  function resetTimer() {
+    indexCountDown = 0;
+  }
+
   function startNewQuestion() {
+    analyzeResults();
     if(indexQuestion == questions.length - 1){
       onFinish();
-      analyzeResults();
       clearInterval(idSetInterval);
     }else{
-      analyzeResults();
-      indexQuestion++;
-      indexCountDown = 0;
+      goToNextQuestion();
+      resetTimer();
       printNewQuestion();
     }
   }
 
-  sendResponseButton.addEventListener("click", startNewQuestion);
+  return {
+    initialize : initialize
+  };
 }
