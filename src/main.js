@@ -135,9 +135,9 @@ function app() {
     }
   }
   
-  function saveResponse(){
+  function saveUserResponse(){
     const radioButtons = document.getElementsByName('resp1');
-    answer              = { id: indexQuestion };
+    answer             = { id: indexQuestion };
     for (let i = 0; i < radioButtons.length; i++) {
       if (radioButtons[i].checked) {
         radioButtons[i].checked = false;
@@ -178,8 +178,6 @@ function app() {
       }
     }, 1000);
   }
-
-
 
   function sumPoints(timeSpent) {
     const playerPoints = document.querySelector('.score p');
@@ -231,18 +229,17 @@ function app() {
   function onTimeExpired(){
     clearInterval(id);
     startNewQuestion();
-    indexCountDown = 0;
 }
 
   function startNewQuestion() {
     if(indexQuestion == questions.length - 1){
       onFinish();
-      saveResponse();
+      saveUserResponse();
       compareAndPrintResult(answer);
       showStats();
       clearInterval(id);
     }else{
-      saveResponse();
+      saveUserResponse();
       compareAndPrintResult(answer);
       showStats();
       indexQuestion++;
