@@ -98,14 +98,14 @@ function app() {
     }
   ];
 
-  const startGameButton   = document.getElementById('startGameButton');
-  const sendResponse      = document.getElementById('sendResponse');
-  var indexQuestion       = 0;
-  var userPoints          = 0;
-  var totalFailedAnswers  = 0;
-  var totalCorrectAnswers = 0;
-  var sumTimePerQuestion  = 0;
-  var indexCountDown      = 0;
+  const startGameButton         = document.getElementById('startGameButton');
+  const sendResponseButton      = document.getElementById('sendResponse');
+  var indexQuestion             = 0;
+  var userPoints                = 0;
+  var totalFailedAnswers        = 0;
+  var totalCorrectAnswers       = 0;
+  var sumTimePerQuestion        = 0;
+  var indexCountDown            = 0;
   var idSetInterval, answer;
 
   function startGame() {
@@ -114,16 +114,16 @@ function app() {
     countDown();
   }
 
+  startGameButton.addEventListener("click", startGame);
+
   function printDomElements (){
     const radioButtons = document.getElementsByName('resp1');
     for (let i = 0; i < radioButtons.length; i++) {
       radioButtons[i].classList.remove("hidden");
     }
     startGameButton.classList.add("hidden");
-    sendResponse.classList.remove("hidden");
+    sendResponseButton.classList.remove("hidden");
   }
-
-  startGameButton.addEventListener("click", startGame);
 
   function printNewQuestion() {
     const quizQuestion  = document.querySelector(".quizQuestion");
@@ -135,6 +135,22 @@ function app() {
       }
     }
   }
+
+  function countDown() {
+    const timer = document.querySelector(".timer");
+    idSetInterval = setInterval(function () {
+      if (indexCountDown <= 12) {
+        timer.innerHTML = indexCountDown;
+        indexCountDown++;
+      } else {
+        onTimeExpired();
+      }
+    }, 1000);
+  }
+
+  function onTimeExpired(){
+    startNewQuestion();
+  }
   
   function saveUserResponse(){
     const radioButtons = document.getElementsByName('resp1');
@@ -145,23 +161,23 @@ function app() {
         answer = {
           id: indexQuestion,
           answerId: i
-        }
+        };
       }
     }
   }
 
   function compareAndPrintResult(answer){
-    const result = document.querySelector(".result");
-    result.classList.remove("hidden");
+    const scoreMessage = document.querySelector(".result");
+    scoreMessage.classList.remove("hidden");
     if (questions[indexQuestion].id !== answer.id) {
       return false;
     }
     if (questions[indexQuestion].correctAnswer.id !== answer.answerId) {
-      result.innerHTML = "Mal!";
+      scoreMessage.innerHTML = "Respuesta Incorrecta!";
       decreasePoints(indexCountDown);
       totalFailedAnswers++;
     }else {
-      result.innerHTML = "Bien!";
+      scoreMessage.innerHTML = "Respuesta Correcta!";
       sumPoints(indexCountDown);
       totalCorrectAnswers++;      
     }
@@ -190,44 +206,28 @@ function app() {
     }
   }
 
-  function calculateTimeAverage() {
-    sumTimePerQuestion += indexCountDown;
-    let timeAverage = sumTimePerQuestion / (indexQuestion + 1);
-    return timeAverage;
+  function showStats() {
+    const sumCorrectAnswers     = document.getElementById('totalCorrectAnswers');
+    const averageSpeed          = document.getElementById('averageSpeed');
+    const sumFailedAnswers      = document.getElementById('totalFailedAnswers');
+    sumCorrectAnswers.innerHTML = totalCorrectAnswers;
+    sumFailedAnswers.innerHTML  = totalFailedAnswers;
+    averageSpeed.innerHTML      = calculateTimeAverage();
   }
 
-  function showStats() {
-    const sumCorrectAnswers = document.getElementById('totalCorrectAnswers');
-    const averageSpeed      = document.getElementById('averageSpeed');
-    const sumFailedAnswers  = document.getElementById('totalFailedAnswers');
-    sumCorrectAnswers.innerHTML = totalCorrectAnswers;
-    sumFailedAnswers.innerHTML = totalFailedAnswers;
-    averageSpeed.innerHTML = calculateTimeAverage();
+  function calculateTimeAverage() {
+    sumTimePerQuestion += indexCountDown;
+    let timeAverage     = sumTimePerQuestion / (indexQuestion + 1);
+    return timeAverage;
   }
 
   function onFinish() {
     const containerQuestions = document.querySelector(".questionsAndAnswers");
-    const endGame = document.querySelector(".endGame");
-    const container = document.querySelector(".container");
+    const endGameMessage     = document.querySelector(".endGame");
+    const container          = document.querySelector(".container");
     containerQuestions.classList.add('hidden');
-    endGame.classList.remove('hidden');
+    endGameMessage.classList.remove('hidden');
     container.style.flexDirection = "column";
-  }
-
-  function countDown() {
-    const timer = document.querySelector(".timer");
-    idSetInterval = setInterval(function () {
-      if (indexCountDown <= 12) {
-        timer.innerHTML = indexCountDown;
-        indexCountDown++;
-      } else {
-        onTimeExpired();
-      }
-    }, 1000);
-  }
-
-  function onTimeExpired(){
-    startNewQuestion();
   }
 
   function saveCompareShowResult(){
@@ -249,6 +249,5 @@ function app() {
     }
   }
 
-  sendResponse.addEventListener("click", startNewQuestion);
-
+  sendResponseButton.addEventListener("click", startNewQuestion);
 }
