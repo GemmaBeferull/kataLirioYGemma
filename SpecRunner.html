@@ -25,23 +25,25 @@
 <body>
   <div class="title">
     <h1>Saber y ganar</h1>
-    <h5>Responde mejor y más rápido que los demás</h5>
+    <h3>Responde mejor y más rápido que los demás</h3>
   </div>
   <div class="container">
     <div class="questionsAndAnswers">
-      <h3 class="quizQuestion" >Inicia el juego clickando abajo!</h3>
-      <h4 class="timer">0</h4>
-      <div>
+      <h3 class="quizQuestion">Inicia el juego clickando abajo!</h3>
+      <h4 class="timer hidden">0</h4>
+      <div class="response">
+        <div>
           <input class="hidden option" type="radio" name="radioInput">
           <p></p>
-      </div>
-      <div>
-          <input class="hidden option" type="radio" name="radioInput">
-          <p></p>
-      </div>
-      <div>
-          <input class="hidden option" type="radio" name="radioInput">
-          <p></p>
+        </div>
+        <div>
+            <input class="hidden option" type="radio" name="radioInput">
+            <p></p>
+        </div>
+        <div>
+            <input class="hidden option" type="radio" name="radioInput">
+            <p></p>
+        </div>
       </div>
       <h3 class="result hidden"></h3>
       <div class="buttons">
@@ -55,14 +57,13 @@
       <h3>Marcador</h3>
       <p>0</p>
     </div>
+    <div class="estadisticas">
+      <h3>Estadísticas</h3>
+      <p>Velocidad promedio respondiendo: <span id = "averageSpeed"></span></p>
+      <p>Preguntas acertadas: <span id = "totalCorrectAnswers"></span></p>
+      <p>Preguntas fallidas: <span id = "totalFailedAnswers"></span></p>
+    </div>
   </div>
-  <div class="estadisticas">
-    <h3>Estadísticas</h3>
-    <p>Velocidad promedio respondiendo: <span id = "averageSpeed"></span></p>
-    <p>Preguntas acertadas: <span id = "totalCorrectAnswers"></span></p>
-    <p>Preguntas fallidas: <span id = "totalFailedAnswers"></span></p>
-  </div>
-  
   <script src="src/main.js"></script>
   <script>
     app();

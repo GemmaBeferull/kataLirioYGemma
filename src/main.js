@@ -118,11 +118,13 @@ function app() {
 
   function printDomElements (){
     const radioButtons = document.getElementsByClassName('option');
+    const timer        = document.querySelector(".timer");
     for (let i = 0; i < radioButtons.length; i++) {
       radioButtons[i].classList.remove("hidden");
     }
     startGameButton.classList.add("hidden");
     sendResponseButton.classList.remove("hidden");
+    timer.classList.remove("hidden");
   }
 
   function printNewQuestion() {
@@ -224,10 +226,8 @@ function app() {
   function onFinish() {
     const containerQuestions = document.querySelector(".questionsAndAnswers");
     const endGameMessage     = document.querySelector(".endGame");
-    const container          = document.querySelector(".container");
     containerQuestions.classList.add('hidden');
     endGameMessage.classList.remove('hidden');
-    container.style.flexDirection = "column";
   }
 
   function analyzeResults(){
